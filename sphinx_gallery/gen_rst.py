@@ -407,6 +407,10 @@ def save_thumbnail(image_path_template, src_file, script_vars, file_conf, galler
     elif os.path.exists(thumbnail_image_path):
         img = thumbnail_image_path
     elif not os.path.exists(thumb_file):
+        warnings.warn(
+            f"Thumbnail file not found: {thumb_file}. Using default thumbnail instead.",
+            UserWarning,
+        )
         # create something to replace the thumbnail
         default_thumb_path = gallery_conf["default_thumb_file"]
         if default_thumb_path is None:
