@@ -729,6 +729,17 @@ def test_thumbnail_path(test_str):
     assert file_conf == {"thumbnail_path": "_static/demo.png"}
 
 
+def test_thumbnail_path_file_not_found():
+    test_str = "#sphinx_gallery_thumbnail_path = '_static/fake_file.png'",
+    with tempfile.NamedTemporaryFile("w", delete=False) as f:
+        f.write("\n".join(['"Docstring"', test_str]))
+    try:
+        with pytest.warns(UserWarning, match="Thumbnail file not found"):
+            file_conf, blocks = split_code_and_text_blocks(f.name)
+    finally:
+        os.remove(f.name)
+
+
 def test_zip_python(gallery_conf):
     """Test generated zipfiles are not corrupt and have expected name and contents."""
     gallery_conf.update(examples_dir=os.path.join(gallery_conf["src_dir"], "examples"))
